@@ -1,244 +1,703 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>System Issues Help Center</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - System Issues Help Center</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: #f4f6f9;
-        margin: 0;
-        padding: 0;
-        color: #333;
-      }
-      header {
-        background: #e05206ff;
-        color: white;
-        padding: 20px;
-        text-align: center;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      header h1 {
-        margin: 0;
-        font-size: 28px;
-      }
-      .search-bar {
-        margin: 20px auto;
-        max-width: 600px;
-        display: flex;
-        justify-content: center;
-      }
-      .search-bar input {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 16px;
-        outline: none;
-      }
-      .problems {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-        max-width: 1000px;
-        margin: 30px auto;
-        padding: 0 20px;
-      }
-      .problem {
-        background: white;
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      .problem:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-        background: #e05206ff;
-        color: white;
-      }
-      .solution {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 25px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        display: none;
-        animation: fadeIn 0.4s ease-in-out;
-      }
-      .solution h2 {
-        margin-top: 0;
-        color: #e05206ff;
-      }
-      iframe {
-        width: 100%;
-        height: 400px;
-        border-radius: 10px;
-        margin-top: 15px;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
         }
-      }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+            padding: 2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 0 2rem 2rem;
+            border-bottom: 1px solid #e0e6ed;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e05206;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #64748b;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #e05206, #ff6b35);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e05206, #ff6b35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .profile-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .profile-info p {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .card-icon.problems {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .card-icon.tutorials {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .card-icon.support {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .card-icon.settings {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #e05206;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .card-action {
+            background: linear-gradient(135deg, #e05206, #ff6b35);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(224, 82, 6, 0.3);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .quick-actions h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.5rem;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #e05206, #ff6b35);
+            color: white;
+            border-color: #e05206;
+            transform: translateY(-2px);
+        }
+
+        .action-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Recent Activity */
+        .recent-activity {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .recent-activity h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            color: #e05206;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.2rem;
+        }
+
+        .activity-time {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: -100%;
+                z-index: 1000;
+                height: 100vh;
+                transition: left 0.3s ease;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: #e05206;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <header>
-      <h1>💻 Common System Issues & Solutions</h1>
-      <p>Find quick fixes and tutorials for everyday computer problems</p>
-    </header>
+</head>
+<body>
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
 
-    <div class="search-bar">
-      <input
-        type="text"
-        id="search"
-        placeholder="Search for a problem..."
-        onkeyup="filterProblems()"
-      />
-    </div>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-desktop"></i>
+                    <span>TechSupport Pro</span>
+                </div>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <i class="fas fa-tools"></i>
+                            <span>Problem Solutions</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-book"></i>
+                            <span>Tutorials</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-headset"></i>
+                            <span>Support</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
 
-    <div class="problems" id="problems">
-      <div class="problem" onclick="showSolution('boot')">
-        Computer Won’t Boot
-      </div>
-      <div class="problem" onclick="showSolution('wifi')">
-        Wi-Fi Not Working
-      </div>
-      <div class="problem" onclick="showSolution('slow')">Computer is Slow</div>
-      <div class="problem" onclick="showSolution('virus')">
-        Virus or Malware Infection
-      </div>
-      <div class="problem" onclick="showSolution('sound')">
-        No Sound on Computer
-      </div>
-      <div class="problem" onclick="showSolution('printer')">
-        Printer Not Working
-      </div>
-      <div class="problem" onclick="showSolution('color')">
-        Colored Printer Printing Black & White Only
-      </div>
-      <div class="problem" onclick="showSolution('filesappear')">
-        How To Make Files On The Desktop Appear With Default App Logo
-      </div>
-      <div class="problem" onclick="showSolution('HpLaser')">
-        HP Laser 150a Waste Toner Container Error
-      </div>
-      <div class="problem" onclick="showSolution('security')">
-        How To Resolve Security Log Full Only Admin Can Sign In Error
-      </div>
-      <div class="problem" onclick="showSolution('disk')">
-        How To Use ChkDsk /f /r Utility from CMD To Scan & REPAIR Disk Issues
-      </div>
-    </div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="welcome-text">
+                    <h1>Welcome back, <span id="userName">John Doe</span>!</h1>
+                    <p>Here's what's happening with your system today</p>
+                </div>
+                <div class="user-profile">
+                    <div class="profile-avatar" id="userAvatar">JD</div>
+                    <div class="profile-info">
+                        <h3 id="profileName">John Doe</h3>
+                        <p>System Administrator</p>
+                    </div>
+                </div>
+            </div>
 
-    <div id="solution" class="solution">
-      <h2 id="solution-title"></h2>
-      <p id="solution-text"></p>
-      <iframe
-        id="solution-video"
-        src=""
-        frameborder="0"
-        allowfullscreen
-      ></iframe>
+            <!-- Dashboard Cards -->
+            <div class="dashboard-grid">
+                <div class="dashboard-card" onclick="navigateToProblems()">
+                    <div class="card-header">
+                        <div class="card-icon problems">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">System Issues</h3>
+                            <p class="card-description">Quick fixes for common computer problems</p>
+                        </div>
+                    </div>
+                    <div class="card-stats">
+                        <div>
+                            <div class="stat-number">11</div>
+                            <div class="stat-label">Solutions Available</div>
+                        </div>
+                        <button class="card-action">View Solutions</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon tutorials">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Video Tutorials</h3>
+                            <p class="card-description">Step-by-step video guides for troubleshooting</p>
+                        </div>
+                    </div>
+                    <div class="card-stats">
+                        <div>
+                            <div class="stat-number">25+</div>
+                            <div class="stat-label">Video Guides</div>
+                        </div>
+                        <button class="card-action">Watch Now</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon support">
+                            <i class="fas fa-life-ring"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Live Support</h3>
+                            <p class="card-description">Get help from our technical experts</p>
+                        </div>
+                    </div>
+                    <div class="card-stats">
+                        <div>
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Available</div>
+                        </div>
+                        <button class="card-action">Get Help</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon settings">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div>
+                            <h3 class="card-title">System Health</h3>
+                            <p class="card-description">Monitor your system's performance</p>
+                        </div>
+                    </div>
+                    <div class="card-stats">
+                        <div>
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">System Health</div>
+                        </div>
+                        <button class="card-action">Check Status</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                <div class="actions-grid">
+                    <a href="index.html" class="action-btn">
+                        <i class="fas fa-search"></i>
+                        <span>Find Solutions</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fas fa-download"></i>
+                        <span>Download Tools</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Ask Question</span>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fas fa-calendar"></i>
+                        <span>Schedule Support</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h2><i class="fas fa-clock"></i> Recent Activity</h2>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Resolved Wi-Fi connectivity issue</div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Watched "Computer Won't Boot" tutorial</div>
+                        <div class="activity-time">1 day ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Downloaded system diagnostic tool</div>
+                        <div class="activity-time">3 days ago</div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script>
-      const solutions = {
-        boot: {
-          title: "Fix: Computer Won’t Boot",
-          text: "Check if the power supply is connected, remove external devices, and try booting in Safe Mode.",
-          video: "https://www.youtube.com/embed/YbaqMvyMYnY",
-        },
-        wifi: {
-          title: "Fix: Wi-Fi Not Working",
-          text: "Restart your router, update your network drivers, and check your adapter settings.",
-          video: "https://www.youtube.com/embed/8FvO4I0EIek",
-        },
-        slow: {
-          title: "Fix: Computer is Slow",
-          text: "Delete temporary files, disable startup apps, and consider upgrading your RAM or SSD.",
-          video: "https://www.youtube.com/embed/j2RW8Rt1nP4",
-        },
-        virus: {
-          title: "Fix: Virus or Malware Infection",
-          text: "Run a full antivirus scan, remove suspicious programs, and update your security patches.",
-          video: "https://www.youtube.com/embed/JPSHlEbI8JI",
-        },
-        sound: {
-          title: "Fix: No Sound on Computer",
-          text: "Check volume settings, update audio drivers, and verify speakers or headphones.",
-          video: "https://www.youtube.com/embed/kg5U4gozgeo",
-        },
-        printer: {
-          title: "Fix: Printer Not Working",
-          text: "Ensure printer is connected, reinstall printer drivers, and check paper/jam issues.",
-          video: "https://www.youtube.com/embed/pK8a_Jsj3wE",
-        },
-        filesappear: {
-          title:
-            "Fix: How To Make Files On The Desktop Appear With Default App Logo",
-          text: "Rebuild Windows icon cache (taskkill explorer.exe, delete IconCache.db, restart).",
-          video: "https://www.youtube.com/embed/ZVWzCe2YL3Y",
-        },
-        color: {
-          title: "Fix: Colored Printer Printing Black & White Only",
-          text: "Check printer settings → set to Color instead of Grayscale/Monochrome",
-          video: "https://www.youtube.com/embed/uN0_IhSLvvw",
-        },
-        HpLaser: {
-          title: "Fix: HP Laser 150a Waste Toner Container Error",
-          text: "Remove, clean, or replace the waste toner container.",
-          video: "https://www.youtube.com/embed/ce_PVQwSkK8",
-        },
-        security: {
-          title:
-            "Fix: How To Resolve Security Log Full Only Admin Can Sign In Error",
-          text: "Log in as admin → clear Windows Event Viewer Security logs.",
-          video: "https://www.youtube.com/embed/1iJw4yzds20",
-        },
-        disk: {
-          title:
-            "Fix: How To Use ChkDsk /f /r Utility from CMD To Scan & REPAIR Disk Issues",
-          text: "Run Command Prompt as administrator and type: chkdsk C: /f /r.",
-          video: "https://www.youtube.com/embed/L05FqfHNp70",
-        },
-      };
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get user data from localStorage or session
+            const userData = JSON.parse(localStorage.getItem('userData') || '{"name": "John Doe", "email": "john@example.com"}');
+            
+            // Update user information
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('profileName').textContent = userData.name;
+            
+            // Generate initials for avatar
+            const initials = userData.name.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('userAvatar').textContent = initials;
+        });
 
-      function showSolution(problem) {
-        document.getElementById("solution-title").innerText =
-          solutions[problem].title;
-        document.getElementById("solution-text").innerText =
-          solutions[problem].text;
-        document.getElementById("solution-video").src =
-          solutions[problem].video;
-        document.getElementById("solution").style.display = "block";
-        document
-          .getElementById("solution")
-          .scrollIntoView({ behavior: "smooth" });
-      }
-
-      function filterProblems() {
-        let input = document.getElementById("search").value.toLowerCase();
-        let problems = document
-          .getElementById("problems")
-          .getElementsByClassName("problem");
-        for (let i = 0; i < problems.length; i++) {
-          let txtValue = problems[i].textContent || problems[i].innerText;
-          problems[i].style.display = txtValue.toLowerCase().includes(input)
-            ? ""
-            : "none";
+        // Navigation functions
+        function navigateToProblems() {
+            window.location.href = 'index.html';
         }
-      }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('userData');
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'login.html'; // Redirect to login page
+            }
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !menuBtn.contains(event.target) && 
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Add smooth animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all dashboard cards
+        document.querySelectorAll('.dashboard-card, .quick-actions, .recent-activity').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
     </script>
-  </body>
+</body>
 </html>
